@@ -118,9 +118,69 @@ def test_get_longest_same_div_count():
     assert get_longest_same_div_count([7,41,37,5,9,8,7,3])==[7,41,37,5]
     assert get_longest_same_div_count([15,7,22,33,55])==[22,33,55]
 
+def is_palindrome(n):
+    '''
+    functia verifica daca un numar este palindrom sau nu
+    :param n: numar intreg
+    :return: True, daca n este palindrom sau False, in caz contrar
+    '''
+    copie_n = n
+    oglindit_n = 0
+    while n > 0:
+        oglindit_n = oglindit_n * 10 + n % 10
+        n = n // 10
+    if copie_n == oglindit_n:
+        return True
+    return False
+
+
+def test_is_palindrome():
+    assert is_palindrome(5)is True
+    assert is_palindrome(717) is True
+    assert is_palindrome(1532) is False
+
+
+
+def toate_palindrome (l):
+    """
+    verifica daca toate nr dintr-o lista sunt palindroame
+    :param l: o lista de nr intregi
+    :return: True, daca toate nr din lista sunt palindroame sau False in caz contrar
+    """
+    for i in range(len(l)):
+        if is_palindrome(l[i])==False:
+            return False
+    return True
+
+def test_is_toate_palindrome():
+    assert toate_palindrome([515,7,131])is True
+    assert toate_palindrome([7,414,37]) is False
+    assert toate_palindrome([15,7,22]) is False
+
+
+def get_longest_all_palindromes(l):
+    """
+        functia determina cea mai lunga subsecventa de numere palindroame
+        :param lista: lista de numere intregi
+        :return: cea mai lunga subsecventa de numere palindroame din lista
+        """
+    subsecventa_max = []
+    for i in range(len(l)):
+        for j in range(i, len(l)):
+            if toate_palindrome(l[i:j + 1]) and len(l[i:j + 1]) > len(subsecventa_max):
+                subsecventa_max = l[i:j + 1]
+    return subsecventa_max
+
+def test_get_longest_all_palindromes():
+    assert get_longest_all_palindromes([5,717,33,10,11])==[5,717,33]
+    assert get_longest_all_palindromes([7,41,37,51,9,8,7,3])==[9,8,7,3]
+    assert get_longest_all_palindromes([15,78,22])==[22]
+
+
 def main():
     print("2.Toate numerele sunt prime")
     print("12.Toate numerele același număr de divizori")
+    print("5.Toate numerele sunt palindroame")
     print("0.iesire")
     while True:
         optiune=int(input("dati optiune:"))
@@ -136,6 +196,12 @@ def main():
             test_toate_nrdivizori()
             test_get_longest_same_div_count()
             print(get_longest_same_div_count(l))
+        elif optiune==5:
+            l=citire_lista()
+            test_is_palindrome()
+            test_is_toate_palindrome()
+            test_get_longest_all_palindromes()
+            print(get_longest_all_palindromes(l))
         elif optiune==0:
             break
         else:
